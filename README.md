@@ -2,7 +2,7 @@
 # macOS Patch Management Script for JumpCloud
 
 Automated, root-safe macOS patching for enterprise fleets managed via JumpCloud.  
-This script discovers and installs recommended updates, applying software updates first, then OS-level updates (e.g., macOS / Security Updates / Command Line Tools), and logs everything to `/var/log/jumpcloud_patch_log.txt`. It also detects if a **reboot is required.
+This script discovers and installs recommended updates, applying software updates first, then OS-level updates (e.g., macOS / Security Updates / Command Line Tools), and logs everything to `/var/log/MacOS-Remote-Patch_log.txtt`. It also detects if a **reboot is required.
 
 ---
 ## Features
@@ -11,7 +11,7 @@ This script discovers and installs recommended updates, applying software update
 - Enumerates available updates via `softwareupdate`
 - Separates software updates from OS/security updates
 - Installs in the **right order** (software → OS)
-- Detailed logging to `/var/log/jumpcloud_patch_log.txt`
+- Detailed logging to `/var/log/MacOS-Remote-Patch_log.txt`
 - Detects **restart requirement** (with optional auto-reboot hook)
 - Designed for **JumpCloud** command deployment (also works standalone)
 
@@ -32,8 +32,8 @@ Clone or copy the script into a directory on the target Mac(s):
 ```bash
 # Example: place under /usr/local/sbin
 sudo mkdir -p /usr/local/sbin
-sudo cp jumpcloud_macos_patch.sh /usr/local/sbin/jumpcloud_macos_patch.sh
-sudo chmod +x /usr/local/sbin/jumpcloud_macos_patch.sh
+sudo cp MacOS-Remote-Patch.sh /usr/local/sbin/MacOS-Remote-Patch.sh
+sudo chmod +x /usr/local/sbin/MacOS-Remote-Patch.sh
 ````
 
 > Ensure the file has **LF** line endings and execute permissions.
@@ -45,7 +45,7 @@ sudo chmod +x /usr/local/sbin/jumpcloud_macos_patch.sh
 ### Run locally (manual)
 
 ```bash
-sudo /usr/local/sbin/jumpcloud_macos_patch.sh
+sudo /usr/local/sbin/MacOS-Remote-Patch.sh
 ```
 
 ### Run via JumpCloud Command
@@ -54,7 +54,7 @@ sudo /usr/local/sbin/jumpcloud_macos_patch.sh
 *   **Run As:** Root
 *   **Command:**
     ```bash
-    /usr/local/sbin/jumpcloud_macos_patch.sh
+    /usr/local/sbin/MacOS-Remote-Patch.sh
     ```
 
 > You can schedule this command in JumpCloud to run during maintenance windows.
@@ -63,7 +63,7 @@ sudo /usr/local/sbin/jumpcloud_macos_patch.sh
 
 ## What the script does (high level)
 
-1.  Creates/uses log file: `/var/log/jumpcloud_patch_log.txt`
+1.  Creates/uses log file: `/var/log/MacOS-Remote-Patch_log.txt`
 2.  Checks **root**: exits with error if not root
 3.  Lists available updates via `softwareupdate -l`
 4.  Parses **recommended** updates
@@ -78,7 +78,7 @@ sudo /usr/local/sbin/jumpcloud_macos_patch.sh
 
 ## Logging
 
-*   **Path:** `/var/log/jumpcloud_patch_log.txt`
+*   **Path:** `/var/log/MacOS-Remote-Patch_log.txt`
 *   **Format:** `YYYY-MM-DD HH:MM:SS - <message>`
 *   Logs both high-level steps and `softwareupdate` output per update
 
@@ -113,7 +113,7 @@ Done.
 ## Example Console Output
 
 ```bash
-$ sudo /usr/local/sbin/jumpcloud_macos_patch.sh
+$ sudo /usr/local/sbin/MacOS-Remote-Patch.sh
 2026-02-25 10:12:03 - === Starting macOS Patch Management ===
 2026-02-25 10:12:03 - Checking for available updates...
 2026-02-25 10:12:10 - Updates found. Parsing update list...
@@ -256,5 +256,5 @@ SCRIPT.
 If you’re using this in production, consider pairing it with:
 
 *   **JumpCloud Scheduled Commands or other solution that you can remove a device** with maintenance MacOS
-*   A **dashboard** that tails `/var/log/jumpcloud_patch_log.txt` for quick compliance checks
+*   A **dashboard** that tails `/var/log/MacOS-Remote-Patch_log.txt` for quick compliance checks
 *   A safe **post-patch reboot policy** aligned with user schedules
